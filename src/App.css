@@ -1,39 +1,111 @@
 body {
   background-color: black;
-  margin: 0; 
+  margin: 0;
   padding: 0;
   height: 100vh;
 }
 
-.container {
-  background-color: transparent; 
-  min-height: 100vh; 
-  color: white; 
-  display: flex; 
-  justify-content: center; 
-  align-items: center;
-}
-
-h1 {
-  font-family: 'Orbitron', sans-serif; /* Aplicar la fuente Orbitron */
-  font-size: 3em;
+.fixed-title {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background-color: black;
   padding: 10px 20px;
-  margin-bottom: 20px; /* Espaciado inferior para separar del carrusel */
-  border-radius: 5px; 
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Sombra para dar un efecto más atractivo */
-  text-align: center; /* Centra el texto */
+  width: 100%;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3em;
+  color: white;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
-
 
 h1 span {
   position: absolute;
   right: 0;
   width: 0;
-  border-left: 1px solid #fefdfd; 
+  border-left: 1px solid #fefdfd;
   animation: escribir 5s steps(30) infinite alternate;
 }
 
 @keyframes escribir {
   from { width: 100%; }
   to { width: 0; }
+}
+
+.image-container {
+  margin-top: 150px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px; 
+}
+
+.flip-card {
+  background-color: transparent;
+  width: 374px; 
+  height: 321px; 
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-card-front {
+  background-color: #030101;
+}
+
+.flip-card-back {
+  background-color: #000000;
+  color: rgb(253, 245, 245);
+  transform: rotateY(180deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.flip-card-back h2 {
+  font-family: Arial, sans-serif; 
+  font-size: 14px; 
+  color: #f8f8f8; 
+  padding: 10px; 
+  text-align: center;
+  line-height: 1.5; 
+}
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.video-container {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(5, 5, 5); 
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+}
+
+video {
+  max-width: 100%;
+  max-height: 100%;
 }
