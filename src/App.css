@@ -1,0 +1,39 @@
+body {
+  background-color: black;
+  margin: 0; 
+  padding: 0;
+  height: 100vh;
+}
+
+.container {
+  background-color: transparent; 
+  min-height: 100vh; 
+  color: white; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+}
+
+h1 {
+  font-family: 'Orbitron', sans-serif; /* Aplicar la fuente Orbitron */
+  font-size: 3em;
+  padding: 10px 20px;
+  margin-bottom: 20px; /* Espaciado inferior para separar del carrusel */
+  border-radius: 5px; 
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Sombra para dar un efecto más atractivo */
+  text-align: center; /* Centra el texto */
+}
+
+
+h1 span {
+  position: absolute;
+  right: 0;
+  width: 0;
+  border-left: 1px solid #fefdfd; 
+  animation: escribir 5s steps(30) infinite alternate;
+}
+
+@keyframes escribir {
+  from { width: 100%; }
+  to { width: 0; }
+}

@@ -1,0 +1,44 @@
+body {
+  background-color: black;
+  color: rgb(0, 0, 0); 
+  margin: 0; 
+  padding: 0;
+  height: 100vh; 
+}
+
+.container {
+  background-color: rgb(0, 0, 0);
+  min-height: 100vh; 
+  color: white; 
+  display: flex; 
+  flex-direction: column; /* Cambiar a columna */
+  align-items: center; /* Centrar horizontalmente */
+  justify-content: center; /* Centrar verticalmente */
+}
+
+
+h1 { 
+  font-family: 'Orbitron', sans-serif; 
+  font-size: 3em;
+  padding: 10px 20px;
+  border-radius: 5px; 
+  position: fixed; 
+  top: 45PX 
+}
+
+
+h1 span {
+  position: absolute;
+  right: 0;
+  width: 0;
+  border-left: 1px solid #fefdfd;
+  animation: escribir 5s steps(30) infinite alternate;
+}
+
+@keyframes escribir {
+  from { width: 100%; }
+  to { width: 0; }
+}
+.carousel {
+  margin-top: 120px; /* Ajusta este valor según lo que necesites */
+}
