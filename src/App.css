@@ -3,11 +3,16 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
 }
 
 .fixed-title {
   position: fixed;
-  top: 0;
+  top: 20;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -15,24 +20,18 @@ body {
   padding: 10px 20px;
   width: 100%;
   text-align: center;
-  font-family: 'Orbitron', sans-serif;
   font-size: 3em;
   color: white;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-h1 span {
-  position: absolute;
-  right: 0;
-  width: 0;
-  border-left: 1px solid #fefdfd;
-  animation: escribir 5s steps(30) infinite alternate;
-}
-
-@keyframes escribir {
-  from { width: 100%; }
-  to { width: 0; }
+.score-board {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  color: white;
+  font-size: 1.5em;
 }
 
 .image-container {
@@ -40,26 +39,25 @@ h1 span {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px; 
+  gap: 10px;
 }
 
 .flip-card {
   background-color: transparent;
-  width: 374px; 
-  height: 321px; 
   perspective: 1000px;
+  cursor: pointer;
 }
 
 .flip-card-inner {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 150px;
+  height: 150px;
   text-align: center;
   transition: transform 0.6s;
   transform-style: preserve-3d;
 }
 
-.flip-card:hover .flip-card-inner {
+.flip-card.flipped .flip-card-inner {
   transform: rotateY(180deg);
 }
 
@@ -73,39 +71,19 @@ h1 span {
 
 .flip-card-front {
   background-color: #030101;
+  border: 2px solid #fff;
+  border-radius: 10px;
 }
 
 .flip-card-back {
-  background-color: #000000;
-  color: rgb(253, 245, 245);
+  background-color: #000;
+  border-radius: 10px;
   transform: rotateY(180deg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
-.flip-card-back h2 {
-  font-family: Arial, sans-serif; 
-  font-size: 14px; 
-  color: #f8f8f8; 
-  padding: 10px; 
-  text-align: center;
-  line-height: 1.5; 
-}
-img {
+
+.flip-card-back img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-.video-container {
-  width: 100%;
-  height: 100%;
-  background-color: rgb(5, 5, 5); 
-  display: flex;
-  justify-content: center; 
-  align-items: center; 
-}
-
-video {
-  max-width: 100%;
-  max-height: 100%;
+  border-radius: 10px;
 }

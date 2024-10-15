@@ -1,122 +1,121 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-const images = [
-    {
-        src: '/images/hourglass.jpg',
-        info: 'En 1996, el telescopio Hubble de la NASA reveló la forma de reloj de arena de esta joven nebulosa planetaria ubicada a unos 8,000 años luz de distancia. En imágenes previas tomadas desde la Tierra, la nebulosa parecía un par de grandes anillos externos con un anillo central más pequeño, pero no se podían ver los detalles más finos.Las nebulosas planetarias son creadas por la muerte de estrellas similares al Sol: la estrella colapsa para formar una densa y caliente enana blanca.Al mismo tiempo, la estrella moribunda expulsa sus capas externas de material, formando una elaborada nube de gas y polvo conocida como nebulosa planetaria.Este no es un fenómeno raro, pero esta estrella en forma de "ojo" es un poco única: debería estar en el centro de la nebulosa, pero está desplazada.' },
-    {
-            src: '/images/as.png',
-            info: 'Estas fotos fueron tomadas por astronautas de la NASA mientras salían de la Estación Espacial Internacional para hacer mejoras y actualizaciones.Descripción de las imágenes: El astronauta Andrew Morgan, en un traje espacial blanco con un visor reflectante, listo para tomar una foto. La astronauta Christina Koch toma una selfie con la Tierra detrás. El astronauta Ricky Arnold, su rostro cubierto por el visor metálico, toma una selfie durante una caminata espacial crédito: NASA'
-        },
-    { src: '/images/galaxy.png', 
-        info: 'En 2009, los telescopios Hubble, Chandra y Spitzer unieron fuerzas para capturar esta vista deslumbrante del corazón de la Vía Láctea.Descripción de la imagen: Colores arremolinados de rojo, naranja, amarillo, oro, rosa y azul dominan la imagen, con el núcleo galáctico brillando intensamente en la parte inferior derecha.Crédito: NASA/JPL-Caltech/ESA' },
-    {
-        src: '/images/hurricane.mp4',
-        info: 'El astronauta de la NASA, Matthew Dominick, capturó esta vista del huracán desde el espacio en la mañana del miércoles 9 de octubre, cuando la @ISS pasó sobre el Golfo de México. Dominick filmó este video en lapso de tiempo desde la nave espacial Dragon Endeavour de SpaceX, que se acopló a la estación después de llevar a Dominick y sus compañeros de tripulación a órbita en marzo',
-        video: '/images/hurricane.mp4'
-    },
-    {
-        src: '/images/WR31.png',
-        info: 'Esta brillante estrella en el centro es una estrella Wolf-Rayet conocida como WR 31a, a unos 30,000 años luz de distancia en la constelación Carina. Las estrellas Wolf-Rayet son extremadamente calientes y masivas, con vidas relativamente cortas que terminan en explosivas supernovas. Descripción de la imagen: Un anillo azul de polvo rodea dos estrellas brillantes, con otras estrellas dispersas en el fondo oscuro. Crédito: ESA/Hubble & NASA'
-    },
-    { src: '/images/sparkle.png', 
-        info: ' Hubble capturó esta imagen de Caldwell 104 en 2017.Descripción de la imagen: Un cúmulo de estrellas con un centro brillante que se vuelve más difuso hacia el exterior.Crédito: ESA/Hubble y NASA' },
-    {
-        src: '/images/ribbon.png',
-        info: 'Visto por Hubble, este delicado filamento rojo es un remanente de la supernova SN 1006, que fue vista hace 1,000 años desde 7,000 años luz de distancia. Esta explosión estelar habría sido el objeto más brillante jamás observado por humanos.Descripción de la imagen: Un fino filamento de gas rojo cruza diagonalmente la escena, con detalles en su estructura. Crédito: NASA, ESA, Hubble Heritage Team'
-    },
-    {
-        src: '/images/westerlund.png',
-        info: 'Si vivieras en este cúmulo de super estrellas, podrías ver un cielo lleno de cientos de estrellas, cada una tan brillante como la luna llena.'
-    },
+const initialCards = [
+    { id: 1, src: '/images/ribbon.png', matched: false },
+    { id: 2, src: '/images/hourglass.jpg', matched: false },
+    { id: 3,  src: '/images/ribbon.png', matched: false },
+    { id: 4, src: '/images/hourglass.jpg', matched: false },
+    { id: 5, src: '/images/sparkle.png', matched: false },
+    { id: 6, src: '/images/WR31.png', matched: false },
+    { id: 7, src: '/images/sparkle.png', matched: false },
+    { id: 8, src: '/images/WR31.png', matched: false },
+    { id: 9, src: '/images/galaxy.png', matched: false },
+    { id: 10, src: '/images/nebula.jpg', matched: false },
+    { id: 11, src: '/images/galaxy.png', matched: false },
+    { id: 12, src: '/images/nebula.jpg', matched: false },
+    { id: 13, src: '/images/as.png', matched: false },
+    { id: 14, src: '/images/as.png', matched: false },
 ];
 
 function App() {
-    const palabra = "NASA";
-    const [displayText, setDisplayText] = useState("");
-    const [index, setIndex] = useState(0);
-    const [showCursor, setShowCursor] = useState(true);
-    const [opacity, setOpacity] = useState(0);
-    const [isTypingFinished, setIsTypingFinished] = useState(false);
+    const [cards, setCards] = useState(shuffleCards(initialCards));
+    const [firstCard, setFirstCard] = useState(null);
+    const [secondCard, setSecondCard] = useState(null);
+    const [turnPlayer1, setTurnPlayer1] = useState(true); 
+    const [scorePlayer1, setScorePlayer1] = useState(0);
+    const [scorePlayer2, setScorePlayer2] = useState(0);
+    const [disabled, setDisabled] = useState(false); 
 
-    useEffect(() => {
-        const fadeIn = setTimeout(() => {
-            setOpacity(1);
-        }, 500);
 
-        return () => clearTimeout(fadeIn);
-    }, []);
+    function shuffleCards(cards) {
+        return [...cards].sort(() => Math.random() - 0.5);
+    }
 
-    useEffect(() => {
-        const typingSpeed = Math.random() * 800 + 100;
+    // Maneja el clic en una carta
+    const handleCardClick = (index) => {
+        if (disabled || cards[index].matched || index === firstCard) return;
 
-        const timer = setTimeout(() => {
-            if (index < palabra.length) {
-                setDisplayText(prev => prev + palabra[index]);
-                setIndex(prev => prev + 1);
-            } else if (!isTypingFinished) {
-                setIsTypingFinished(true);
-                setShowCursor(false);
-            }
-        }, typingSpeed);
-
-        return () => clearTimeout(timer);
-    }, [index, isTypingFinished]);
-
-    useEffect(() => {
-        if (!isTypingFinished) {
-            const cursorTimer = setInterval(() => {
-                setShowCursor(prev => !prev);
-            }, 500);
-
-            return () => clearInterval(cursorTimer);
+        if (firstCard === null) {
+            setFirstCard(index);
+        } else {
+            setSecondCard(index);
         }
-    }, [isTypingFinished]);
+    };
+
+    
+    useEffect(() => {
+        if (firstCard !== null && secondCard !== null) {
+            setDisabled(true); 
+
+            setTimeout(() => {
+                checkMatch();
+            }, 1000);
+        }
+    }, [firstCard, secondCard]);
+
+    
+    const checkMatch = () => {
+        const updatedCards = [...cards];
+
+        if (cards[firstCard].src === cards[secondCard].src) {
+            updatedCards[firstCard].matched = true;
+            updatedCards[secondCard].matched = true;
+
+            
+            if (turnPlayer1) {
+                setScorePlayer1(prev => prev + 1);
+            } else {
+                setScorePlayer2(prev => prev + 1);
+            }
+        }
+
+        
+        setCards(updatedCards);
+        resetTurn();
+    };
+
+   
+    const resetTurn = () => {
+        setFirstCard(null);
+        setSecondCard(null);
+        setDisabled(false);
+        setTurnPlayer1(prev => !prev); 
+    };
+
+    const winnerMessage = () => {
+        if (scorePlayer1 > scorePlayer2) return "¡Jugador 1 gana!";
+        if (scorePlayer2 > scorePlayer1) return "¡Jugador 2 gana!";
+        return "¡Empate!";
+    };
 
     return (
-        <div className="container" style={{ opacity: opacity }}>
-            <h1 className="fixed-title">
-                {displayText}
-                {!isTypingFinished && (showCursor ? '|' : ' ')}
-            </h1>
+        <div className="container text-center">
+            <h1 className="fixed-title">Memorama</h1>
+            <div className="score-board">
+                <p>Jugador 1: {scorePlayer1}</p>
+                <p>Jugador 2: {scorePlayer2}</p>
+            </div>
 
-            <div className="image-container d-flex flex-wrap justify-content-center">
-                {images.map((image, index) => (
-                    <div key={index} className="flip-card m-2" style={{ width: '374px', height: '321px', position: 'relative' }}>
+            <div className="image-container">
+                {cards.map((card, index) => (
+                    <div
+                        key={index}
+                        className={`flip-card ${card.matched || firstCard === index || secondCard === index ? "flipped" : ""}`}
+                        onClick={() => handleCardClick(index)}
+                    >
                         <div className="flip-card-inner">
-                            <div className="flip-card-front">
-                                {image.video ? (
-                                    <div className="video-container">
-                                        <video
-                                            width="374"
-                                            height="321"
-                                            controls={false} // No mostrar controles
-                                            muted
-                                            loop
-                                            autoPlay
-                                            preload="auto"
-                                            src={image.video}
-                                            alt={`Video ${index + 1}`}
-                                        />
-                                    </div>
-                                ) : (
-                                    <img
-                                        src={image.src}
-                                        alt={`Image ${index + 1}`}
-                                        style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '10px' }} // Estilo opcional
-                                    />
-                                )}
-                            </div>
+                            <div className="flip-card-front"></div>
                             <div className="flip-card-back">
-                                <h2>{image.info}</h2>
+                                <img src={card.src} alt="Card" />
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
+
+            {cards.every(card => card.matched) && <h2>{winnerMessage()}</h2>}
         </div>
     );
 }
